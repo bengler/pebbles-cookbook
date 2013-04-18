@@ -13,4 +13,4 @@ components.
 
 # Author
 
-Author:: Lars Haugseth (<lars.haugseth@amedia.no>)
+Lars Haugseth (<lars.haugseth@amedia.no>)
