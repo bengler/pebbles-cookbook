@@ -29,3 +29,8 @@ include_recipe "postgresql::client"
 
 # Nginx
 include_recipe "nginx"
+
+# HAProxy
+node.set['haproxy']['incoming_port'] = 8080
+node.set['haproxy']['member_port']   = 80
+include_recipe "haproxy"

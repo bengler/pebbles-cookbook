@@ -8,4 +8,5 @@ version          "0.1.0"
 
 depends "rvm"
 depends "nginx"
+depends "haproxy"
 depends "postgresql"
