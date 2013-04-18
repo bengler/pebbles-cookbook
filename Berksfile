@@ -1,6 +1,6 @@
 site :opscode
 
 metadata
-cookbook 'rvm', github: 'fnichol/chef-rvm', ref: 'v0.9.0'
+cookbook 'rvm', github: 'fnichol/chef-rvm'
 cookbook 'nginx'
 cookbook 'postgresql'
