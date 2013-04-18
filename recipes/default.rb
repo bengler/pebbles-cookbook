@@ -26,3 +26,6 @@ node.set['postgresql']['pg_hba'] = [
 ]
 include_recipe "postgresql::server"
 include_recipe "postgresql::client"
+
+# Nginx
+include_recipe "nginx"
