@@ -34,3 +34,35 @@ include_recipe "nginx"
 node.set['haproxy']['incoming_port'] = 8080
 node.set['haproxy']['member_port']   = 80
 include_recipe "haproxy"
+
+# Stop running Nginx and HAProxy services, Brow will start them
+# with the correct configuration
+execute "stop_nginx" do
+  command "service nginx stop"
+  only_if { ::File.exists?("/var/run/nginx.pid") }
+end
+execute "stop_haproxy" do
+  command "service haproxy stop"
+  only_if { ::File.exists?("/var/run/haproxy.pid") }
+end
+
+# Make vagrant user owner of /var/log/nginx
+execute "nginx_logs_change_group_to_vagrant" do
+  command "chown -R vagrant:vagrant /var/log/nginx"
+  not_if { ::Etc.getpwuid(::File.stat('/var/log/nginx').uid).name == 'vagrant' }
+end
+
+# Install curl development packages
+execute "install_curl_dev" do
+  command "apt-get install -q -y libcurl4-openssl-dev"
+  not_if { ::File.exists?("/usr/bin/curl-config") }
+end
+
+# Install screen
+execute "install_screen" do
+  command "apt-get install -q -y screen"
+  not_if { ::File.exists?("/usr/bin/screen") }
+end
+
+# Brow is needed for pretty much anything
+# include_recipe "pebbles::brow"
