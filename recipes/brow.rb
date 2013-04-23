@@ -21,3 +21,9 @@ execute "nginx_logs_change_group_to_vagrant" do
   command "chown -R vagrant:vagrant /var/log/nginx"
   not_if { ::Etc.getpwuid(::File.stat('/var/log/nginx').uid).name == 'vagrant' }
 end
+
+# Install Brow
+execute "brow_install" do
+  command %(su -lc "cd /vagrant/src/brow && bundle install && rake install" vagrant)
+  not_if  %(su -lc "which brow" vagrant)
+end
