@@ -10,6 +10,9 @@
 # Ubuntu packages
 include_recipe "pebbles::packages"
 
+# System setup
+include_recipe "pebbles::system"
+
 # Ruby through RVM
 include_recipe "pebbles::ruby"
 
