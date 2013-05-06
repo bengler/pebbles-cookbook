@@ -7,6 +7,10 @@
 # All rights reserved - Do Not Redistribute
 #
 
+class Chef::Recipe
+  include PebbleSetup
+end
+
 # Ubuntu packages
 include_recipe "pebbles::packages"
 
