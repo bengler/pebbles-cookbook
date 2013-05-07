@@ -1,5 +1,14 @@
 module PebbleSetup
 
+  def pebble_name(name)
+    @pebble = name
+  end
+
+  def pebble
+    @pebble or raise "Pebble recipe has not set pebble_name!"
+  end
+
+  # Path to where code repositories are located
   def repositories
     repos = node['pebbles']['repositories']
     if !repos
@@ -13,16 +22,32 @@ module PebbleSetup
     repos
   end
 
+  def root_path
+    File.join(repositories, pebble)
+  end
+
+  # Install bundle
   def bundle_install
-    path = File.join(repositories, pebble_name)
+    path = root_path
     execute "Installing bundle" do
       command %(su vagrant -lc "cd #{path} && bundle install")
     end
   end
 
+  # Run a rake task
+  def rake_task(task_name, options = {})
+    environment = options[:env] || :development
+    rake_command = "bundle exec rake #{task_name} RACK_ENV=#{environment}"
+    path = root_path
+    execute "Running rake task #{task_name}" do
+      command %(su vagrant -lc "cd #{path} && #{rake_command}")
+    end
+  end
+
+  # Setup databases and database users
   def database_setup
-    config_tmpl = File.join(repositories, pebble_name, 'config', 'database-example.yml')
-    config_file = File.join(repositories, pebble_name, 'config', 'database.yml')
+    config_tmpl = File.join(root_path, 'config', 'database-example.yml')
+    config_file = File.join(root_path, 'config', 'database.yml')
 
     if !File.exists?(config_file)
       if File.exists?(config_tmpl)
@@ -59,10 +84,4 @@ module PebbleSetup
       end
     end
   end
-
-  # Deduce pebble name from calling recipe
-  def pebble_name
-    File.basename caller[1].split(':')[0], '.rb'
-  end
-
 end
