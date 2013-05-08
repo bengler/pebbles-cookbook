@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module PebbleSetup
 
   def pebble_name(name)
@@ -41,6 +43,19 @@ module PebbleSetup
     path = root_path
     execute "Running rake task #{task_name}" do
       command %(su vagrant -lc "cd #{path} && #{rake_command}")
+    end
+  end
+
+  # Create log directory if it doesn't exist
+  def ensure_log_directory
+    FileUtils.mkdir_p File.join(root_path, 'log')
+  end
+
+  # Create symlink to code in ~/.brow
+  def brow_symlink
+    path = root_path
+    execute "Creating symlink in ~/.brow" do
+      command %(su vagrant -lc "mkdir -p ~/.brow && cd ~/.brow && ln -s #{path}")
     end
   end
 
