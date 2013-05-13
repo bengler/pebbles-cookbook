@@ -55,7 +55,7 @@ module PebbleSetup
   def brow_symlink
     path = root_path
     execute "Creating symlink in ~/.brow" do
-      command %(su vagrant -lc "mkdir -p ~/.brow && cd ~/.brow && ln -s #{path}")
+      command %(su vagrant -lc "mkdir -p ~/.brow && cd ~/.brow && ln -sf #{path}")
     end
   end
 
