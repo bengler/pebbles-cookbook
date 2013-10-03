@@ -66,8 +66,8 @@ module PebbleSetup
 
     if !File.exists?(config_file)
       if File.exists?(config_tmpl)
-        Chef::Log.fatal("[#{pebble_name}] Database config template exists, but no actual config.")
-        raise
+        Chef::Log.fatal("[#{@pebble}] Database config template exists, but no actual config.")
+        raise "Database config missing for Pebble #{@pebble}"
       else
         return
       end
