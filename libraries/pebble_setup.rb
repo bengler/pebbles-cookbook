@@ -36,6 +36,14 @@ module PebbleSetup
     end
   end
 
+  # Run command through Bundler
+  def bundle_exec(cmd)
+    path = root_path
+    execute "Running through bundle" do
+      command %(su vagrant -lc "cd #{path} && bundle exec #{cmd}")
+    end
+  end
+
   # Run a rake task
   def rake_task(task_name, options = {})
     environment = options[:env] || :development
