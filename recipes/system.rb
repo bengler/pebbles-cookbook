@@ -15,3 +15,8 @@ execute "Set system locale" do
   command %(update-locale LANG=#{language})
   not_if  %(cat /etc/default/locale | grep -qix LANG=#{language})
 end
+
+execute "vagrant_sudo_without_password" do
+  command %(echo "vagrant  ALL= (ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers)
+  not_if  %(grep -qix "vagrant  ALL= (ALL:ALL) NOPASSWD: ALL" /etc/sudoers)
+end
