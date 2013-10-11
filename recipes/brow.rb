@@ -24,6 +24,6 @@ end
 
 # Install Brow
 execute "brow_install" do
-  command %(su -lc "cd /vagrant/src/brow && bundle install && rake install")
-  not_if  %(su -lc "which brow" vagrant)
+  command %(su vagrant -lc "cd /vagrant/src/brow && bundle install && rake install")
+  not_if  %(su vagrant -lc "which brow")
 end
