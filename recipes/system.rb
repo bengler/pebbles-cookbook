@@ -16,7 +16,10 @@ execute "Set system locale" do
   not_if  %(cat /etc/default/locale | grep -qix LANG=#{language})
 end
 
+# Allow vagrant user to run sudo with no password
+sudoers_file = '/etc/sudoers'
+vagrant_spec = 'vagrant  ALL= (ALL:ALL) NOPASSWD: ALL'
 execute "vagrant_sudo_without_password" do
-  command %(echo "vagrant  ALL= (ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers)
-  not_if  %(grep -qix "vagrant  ALL= (ALL:ALL) NOPASSWD: ALL" /etc/sudoers)
+  command %(echo "#{vagrant_spec}" >> #{sudoers_file})
+  not_if  %(grep -qix "#{vagrant_spec}" #{sudoers_file})
 end
